@@ -1,0 +1,13 @@
+- group:
+    name: agayle
+    state: present
+    gid: 2000
+
+- user:
+    name: agayle
+    groups:
+    - adgayle
+    - vagrant
+    - docker
+    comment: Alquin Gayle
+    uid: 2000

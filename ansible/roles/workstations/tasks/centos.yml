@@ -1,0 +1,50 @@
+- dnf:
+    state: latest
+    name:
+    - git
+    - make
+    - unzip
+    - jq
+    - wget
+    - curl
+    - yum-utils
+    update_cache: yes
+
+- dnf:
+    state: absent
+    name:
+    - docker
+    - docker-client
+    - docker-client-latest
+    - docker-latest
+    - docker-latest-logrotate
+    - docker-logrotate
+    - docker-engine
+    autoremove: yes
+
+- yum_repository:
+    name: docker-ce-stable
+    file: docker-ce
+    description: Docker Community Edition
+    baseurl: https://download.docker.com/linux/centos/8/x86_64/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://download.docker.com/linux/centos/gpg
+
+- dnf:
+    state: latest
+    name:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    update_cache: yes
+
+- dnf:
+    state: latest
+    name: '*'
+    update_cache: yes
+
+- systemd:
+    name: docker
+    enabled: yes
+    state: started
