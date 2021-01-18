@@ -5,5 +5,15 @@
   tasks:
     - include_role:
         name: common
+      vars:
+        user_name: agayle
+        full_name: Alquin Gayle
+        user_id: 2000
+        group_name: agayle
+        group_id: 2000
+        group_names:
+        - vagrant
+        - docker
+
     - include_role:
         name: workstations
