@@ -1,3 +1,6 @@
 - name: install utilities via yum packages
   import_tasks: centos.yml
   when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: configure prompt and tmux with powerline
+  import_tasks: prompt.yml

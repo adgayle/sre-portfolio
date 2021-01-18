@@ -25,7 +25,12 @@
         - jq
         - wget
         - curl
+        - tmux
         - yum-utils
+        - powerline
+        - powerline-fonts
+        - vim-powerline
+        - tmux-powerline
         old_docker_packages:
         - docker
         - docker-client
@@ -40,3 +45,5 @@
         - docker-ce
         - docker-ce-cli
         - containerd.io
+        user_name: agayle
+        group_name: agayle
