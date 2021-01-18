@@ -1,47 +1,30 @@
 - dnf:
     state: latest
-    name:
-    - git
-    - make
-    - unzip
-    - jq
-    - wget
-    - curl
-    - yum-utils
+    name: "{{ utility_packages }}"
     update_cache: yes
 
 - dnf:
     state: absent
-    name:
-    - docker
-    - docker-client
-    - docker-client-latest
-    - docker-latest
-    - docker-latest-logrotate
-    - docker-logrotate
-    - docker-engine
+    name: "{{ old_docker_packages }}"
     autoremove: yes
 
 - yum_repository:
     name: docker-ce-stable
     file: docker-ce
     description: Docker Community Edition
-    baseurl: https://download.docker.com/linux/centos/8/x86_64/stable
+    baseurl: "https://download.docker.com/linux/centos/{{ centos_version }}/{{ centos_arch }}/stable"
     enabled: yes
     gpgcheck: yes
     gpgkey: https://download.docker.com/linux/centos/gpg
 
 - dnf:
     state: latest
-    name:
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
+    name: "{{ docker_ce_packages }}"
     update_cache: yes
 
 - dnf:
     state: latest
-    name: '*'
+    name: "*"
     update_cache: yes
 
 - systemd:

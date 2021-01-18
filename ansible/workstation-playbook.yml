@@ -17,3 +17,26 @@
 
     - include_role:
         name: workstations
+      vars:
+        utility_packages:
+        - git
+        - make
+        - unzip
+        - jq
+        - wget
+        - curl
+        - yum-utils
+        old_docker_packages:
+        - docker
+        - docker-client
+        - docker-client-latest
+        - docker-latest
+        - docker-latest-logrotate
+        - docker-logrotate
+        - docker-engine
+        centos_version: "8"
+        centos_arch: x86_64
+        docker_ce_packages:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
