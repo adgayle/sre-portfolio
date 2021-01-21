@@ -1,0 +1,26 @@
+- package:
+    state: latest
+    name: "{{ powerline_packages }}"
+
+- copy:
+    src: /usr/share/tmux/powerline_tmux_2.1_plus.conf
+    dest: "/home/{{ user_name }}/.tmux.conf"
+    owner: "{{ user_name }}"
+    group: "{{ group_name }}"
+    mode: "0640"
+
+- lineinfile:
+    path: "/home/{{ user_name }}/.tmux.conf"
+    line: source "/usr/share/tmux/powerline.conf"
+    state: present
+
+- blockinfile:
+    path: "/home/{{ user_name }}/.bashrc"
+    block: |
+      # enable powerline prompt
+      if [ -f `which powerline-daemon` ]; then
+        powerline-daemon -q
+        POWERLINE_BASH_CONTINUATION=1
+        POWERLINE_BASH_SELECT=1
+        . /usr/share/powerline/bash/powerline.sh
+      fi
