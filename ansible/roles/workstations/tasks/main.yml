@@ -1,10 +1,14 @@
 - name: install utilities via yum packages
-  import_tasks: centos.yml
+  import_tasks: utilities.yml
   when: ansible_facts['os_family']|lower == 'redhat'
 
 - name: install docker community edition
   import_tasks: docker.yml
-  when ansible_facts['os_family']|lower == 'redhat'
+  when: ansible_facts['os_family']|lower == 'redhat'
 
 - name: configure prompt and tmux with powerline
   import_tasks: prompt.yml
+
+- name: install latest centos patches
+  import_tasks: centos.yml
+  when ansible_facts['os_family']|lower == 'redhat'

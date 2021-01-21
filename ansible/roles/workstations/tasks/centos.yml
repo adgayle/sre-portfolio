@@ -1,9 +1,4 @@
 - dnf:
     state: latest
-    name: "{{ utility_packages }}"
-    update_cache: yes
-
-- dnf:
-    state: latest
     name: "*"
     update_cache: yes
