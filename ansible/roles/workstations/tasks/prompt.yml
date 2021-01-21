@@ -1,3 +1,8 @@
+- package:
+    state: latest
+    name: "{{ powerline_packages }}"
+    update_cache: yes
+
 - copy:
     src: /usr/share/tmux/powerline_tmux_2.1_plus.conf
     dest: "/home/{{ user_name }}/.tmux.conf"

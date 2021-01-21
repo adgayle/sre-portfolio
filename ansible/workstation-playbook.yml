@@ -18,6 +18,11 @@
     - include_role:
         name: workstations
       vars:
+        powerline_packages:
+        - powerline
+        - powerline-fonts
+        - vim-powerline
+        - tmux-powerline
         utility_packages:
         - git
         - make
@@ -27,10 +32,6 @@
         - curl
         - tmux
         - yum-utils
-        - powerline
-        - powerline-fonts
-        - vim-powerline
-        - tmux-powerline
         old_docker_packages:
         - docker
         - docker-client
