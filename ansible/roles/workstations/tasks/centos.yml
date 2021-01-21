@@ -4,30 +4,6 @@
     update_cache: yes
 
 - dnf:
-    state: absent
-    name: "{{ old_docker_packages }}"
-    autoremove: yes
-
-- yum_repository:
-    name: docker-ce-stable
-    file: docker-ce
-    description: Docker Community Edition
-    baseurl: "https://download.docker.com/linux/centos/{{ centos_version }}/{{ centos_arch }}/stable"
-    enabled: yes
-    gpgcheck: yes
-    gpgkey: https://download.docker.com/linux/centos/gpg
-
-- dnf:
-    state: latest
-    name: "{{ docker_ce_packages }}"
-    update_cache: yes
-
-- dnf:
     state: latest
     name: "*"
     update_cache: yes
-
-- systemd:
-    name: docker
-    enabled: yes
-    state: started
