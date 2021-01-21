@@ -1,0 +1,50 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - include_role:
+        name: common
+      vars:
+        user_name: agayle
+        full_name: Alquin Gayle
+        user_id: 2000
+        group_name: agayle
+        group_id: 2000
+        group_names:
+        - vagrant
+        - wheel
+
+    - include_role:
+        name: workstations
+      vars:
+        powerline_packages:
+        - powerline
+        - powerline-fonts
+        - vim-powerline
+        - tmux-powerline
+        utility_packages:
+        - git
+        - make
+        - unzip
+        - jq
+        - wget
+        - curl
+        - tmux
+        - yum-utils
+        old_docker_packages:
+        - docker
+        - docker-client
+        - docker-client-latest
+        - docker-latest
+        - docker-latest-logrotate
+        - docker-logrotate
+        - docker-engine
+        centos_version: "8"
+        centos_arch: x86_64
+        docker_ce_packages:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        user_name: agayle
+        group_name: agayle

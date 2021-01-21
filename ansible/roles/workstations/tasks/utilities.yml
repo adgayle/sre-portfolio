@@ -1,0 +1,3 @@
+- package:
+    state: latest
+    name: "{{ utility_packages }}"

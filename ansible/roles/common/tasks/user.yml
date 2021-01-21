@@ -1,0 +1,18 @@
+- group:
+    name: "{{ group_name }}"
+    state: present
+    gid: "{{ group_id }}"
+
+- user:
+    name: "{{ user_name }}"
+    group: "{{ group_name }}"
+    groups: "{{ group_names }}"
+    comment: "{{ full_name }}"
+    uid: "{{ user_id }}"
+
+- file:
+    path: "/home/{{ user_name }}/code"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ group_name }}"
+    mode: 0750
