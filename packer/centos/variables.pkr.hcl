@@ -1,0 +1,10 @@
+variable "vm_name" {}
+variable "iso_url" {}
+variable "iso_checksum" {}
+variable "ssh_username" {}
+variable "ssh_password" {}
+variable "cpus" {}
+variable "memory" {}
+variable "disk_size" {}
+variable "http_directory" {}
+variable "ks_path" {}
