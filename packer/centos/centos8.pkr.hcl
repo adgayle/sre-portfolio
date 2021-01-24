@@ -30,4 +30,21 @@ source "virtualbox-iso" "centos8-vbox" {
 
 build {
   sources = ["sources.virtualbox-iso.centos8-vbox"]
+
+  provisioner "shell" {
+    inline = [
+      "echo ${var.ssh_password} | sudo -S dnf install -y epel-release",
+      "echo ${var.ssh_password} | sudo -S dnf install -y ansible"
+    ]
+  }
+
+  provisioner "file" {
+    source      = "../../ansible"
+    destination = "/tmp"
+  }
+
+  provisioner "ansible-local" {
+    playbook_file   = "/tmp/ansible/workstation-playbook.yml"
+    extra_arguments = ["--extra-vars", "\"ansible_become_password=${var.ssh_password}\""]
+  }
 }
