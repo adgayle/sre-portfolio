@@ -7,17 +7,19 @@ source "virtualbox-iso" "centos8-vbox" {
   iso_checksum         = var.iso_checksum
   http_directory       = var.http_directory
 
+  communicator         = "ssh"
+  ssh_timeout          = "30m"
   ssh_username         = var.ssh_username
   ssh_password         = var.ssh_password
 
   cpus                 = var.cpus
   memory               = var.memory
   disk_size            = var.disk_size
-  hard_drive_interface = "scsi"
+  hard_drive_interface = "sata"
 
   boot_wait            = "5s"
   boot_command         = [
-    "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `ks_path` }}<enter><wait>"
+    "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/${var.ks_path}<enter><wait>"
   ]
 
   shutdown_command     = "echo ${var.ssh_password} | sudo -S shutdown -P now"
