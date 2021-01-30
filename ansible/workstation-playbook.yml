@@ -3,7 +3,8 @@
   become: yes
 
   tasks:
-    - include_role:
+    - name: run common tasks
+      include_role:
         name: common
       vars:
         user_name: agayle
@@ -12,10 +13,10 @@
         group_name: agayle
         group_id: 2000
         group_names:
-        - vagrant
         - wheel
 
-    - include_role:
+    - name: run workstation tasks
+      include_role:
         name: workstations
       vars:
         powerline_packages:
