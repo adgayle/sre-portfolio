@@ -1,5 +1,5 @@
 vm_name        = "vbw-centos8"
-iso_url        = "http://ftp.usf.edu/pub/centos/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-20210120-boot.iso"
+iso_url        = "http://ftp.usf.edu/pub/centos/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-20210126-boot.iso"
 iso_checksum   = "file:http://ftp.usf.edu/pub/centos/8-stream/isos/x86_64/CHECKSUM"
 ssh_username   = "agayle"
 cpus           = 1
