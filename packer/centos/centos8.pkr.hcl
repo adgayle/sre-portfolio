@@ -38,13 +38,10 @@ build {
     ]
   }
 
-  provisioner "file" {
-    source      = "../../ansible"
-    destination = "/tmp"
-  }
-
   provisioner "ansible-local" {
-    playbook_file   = "/tmp/ansible/workstation-playbook.yml"
-    extra_arguments = ["--extra-vars", "\"ansible_become_password=${var.ssh_password}\""]
+    playbook_dir            = "../../ansible"
+    playbook_file           = "../../ansible/workstation-playbook.yml"
+    extra_arguments         = ["--extra-vars", "\"ansible_become_password=${var.ssh_password}\""]
+    clean_staging_directory = true
   }
 }
