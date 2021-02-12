@@ -4,10 +4,12 @@ name: packer validate
 
 on:
   push:
+    branches: [ main ]
     paths:
     - 'packer/**/**.hcl'
     - 'packer/**/**.json'
   pull_request:
+    branches: [ main ]
     paths:
     - 'packer/**/**.hcl'
     - 'packer/**/**.hcl'
