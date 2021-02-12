@@ -1,0 +1,35 @@
+# This workflow will validate the packer configuration files
+
+name: packer validate
+
+on:
+  push:
+    paths:
+    - 'packer/**/**.hcl'
+    - 'packer/**/**.json'
+  pull_request:
+    paths:
+    - 'packer/**/**.hcl'
+    - 'packer/**/**.hcl'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install packer
+      run: |
+        apt install -y unzip curl
+        curl -o /tmp/packer_$PACKER_VERSION_linux_amd64.zip https://releases.hashicorp.com/packer/1.6.6/packer_$PACKER_VERSION_linux_amd64.zip  
+        unzip /tmp/packer_$PACKER_VERSION_linux_amd64.zip && mv /usr/local/bin && chmod a+x /usr/local/bin
+        rm /tmp/packer_$PACKER_VERSION_linux_amd64.zip
+      env:
+        PACKER_VERSION: 1.6.6
+    - name: check packer hcl2 formatting
+      run:
+        packer fmt
+      with working_directory: packer/centos/
+    - name: validate packer hcl2 syntax
+      run:
+        packer validate
+      with working_directory: packer/centos/
