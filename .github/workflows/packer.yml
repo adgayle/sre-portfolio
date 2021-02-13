@@ -34,4 +34,4 @@ jobs:
     - name: validate packer hcl2 syntax
       working-directory: packer/centos/
       run:
-        packer validate -var "ssh_password=${{ secrets.PACKER_SSH_PASSWORD }}".
+        packer validate -var "ssh_password=${{ secrets.PACKER_SSH_PASSWORD }}" .
