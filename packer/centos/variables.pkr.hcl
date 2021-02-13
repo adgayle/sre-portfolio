@@ -3,27 +3,27 @@ variable "vm_name" {
 }
 
 variable "iso_url" {
-  type = string
+  type    = string
   default = "http://ftp.usf.edu/pub/centos/8-stream/isos/x86_64/CentOS-Stream-8-x86_64-20210126-boot.iso"
 }
 
 variable "iso_checksum" {
-  type = string
+  type    = string
   default = "file:http://ftp.usf.edu/pub/centos/8-stream/isos/x86_64/CHECKSUM"
 }
 
 variable "ssh_username" {
-  type = string
+  type    = string
   default = "agayle"
 }
 
 variable "ssh_password" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "cpus" {
-  type = number
+  type    = number
   default = 1
 }
 
@@ -40,11 +40,11 @@ variable "disk_size" {
 }
 
 variable "http_directory" {
-  type = string
+  type    = string
   default = "./http"
 }
 
 variable "ks_path" {
-  type = string
+  type    = string
   default = "ks_centos8.cfg"
 }
