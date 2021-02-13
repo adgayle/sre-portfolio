@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: install packer
       run: |
-        wget -o /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip https://releases.hashicorp.com/packer/1.6.6/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip  
+        wget -O /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip https://releases.hashicorp.com/packer/1.6.6/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip  
         unzip /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip && sudo mv /usr/local/bin && sudo chmod a+x /usr/local/bin/packer
         rm /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip
       env:
@@ -29,7 +29,7 @@ jobs:
     - name: check packer hcl2 formatting
       working-directory: packer/centos/
       run:
-        packer fmt
+        packer fmt -check
     - name: validate packer hcl2 syntax
       working-directory: packer/centos/
       run:
