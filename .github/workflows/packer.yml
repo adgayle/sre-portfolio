@@ -1,18 +1,15 @@
-# This workflow will validate the packer configuration files
+# workflow will validate the packer configuration files
 
 name: packer validate
-
 on:
   push:
-    #branches: [ main ]
     paths:
-    - 'packer/**/**.hcl'
-    - 'packer/**/**.json'
+    - 'packer/centos/*.hcl'
+    - 'packer/centos/*.json'
   pull_request:
-    #branches: [ main ]
     paths:
-    - 'packer/**/**.hcl'
-    - 'packer/**/**.hcl'
+    - 'packer/centos/*.hcl'
+    - 'packer/centos/*.json'
 
 jobs:
   validate:
@@ -26,7 +23,6 @@ jobs:
         rm /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip
       env:
         PACKER_VERSION: 1.6.6
-        #PACKER_SSH_PASSWORD: ${{ secret.PACKER_SSH_PASSWORD }}
     - name: check packer hcl2 formatting
       working-directory: packer/centos/
       run:
