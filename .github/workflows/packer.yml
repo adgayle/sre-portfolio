@@ -29,8 +29,8 @@ jobs:
     - name: check packer hcl2 formatting
       working-directory: packer/centos/
       run:
-        packer fmt -check
+        packer fmt -check .
     - name: validate packer hcl2 syntax
       working-directory: packer/centos/
       run:
-        packer validate
+        packer validate .
