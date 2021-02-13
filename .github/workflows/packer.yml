@@ -26,6 +26,7 @@ jobs:
         rm /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip
       env:
         PACKER_VERSION: 1.6.6
+        #PACKER_SSH_PASSWORD: ${{ secret.PACKER_SSH_PASSWORD }}
     - name: check packer hcl2 formatting
       working-directory: packer/centos/
       run:
@@ -33,4 +34,4 @@ jobs:
     - name: validate packer hcl2 syntax
       working-directory: packer/centos/
       run:
-        packer validate .
+        packer validate -var "ssh_password=${{ secret.PACKER_SSH_PASSWORD }}".
