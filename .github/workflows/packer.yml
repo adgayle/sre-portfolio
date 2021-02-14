@@ -14,20 +14,22 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+
     steps:
+    - name: Checkout code
     - uses: actions/checkout@v2
-    - name: install packer
-      run: |
-        wget --no-clobber --output-document=/tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip https://releases.hashicorp.com/packer/1.6.6/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip
-        unzip /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip && sudo mv /usr/local/bin && sudo chmod a+x /usr/local/bin/packer
-        rm /tmp/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip
-      env:
-        PACKER_VERSION: 1.6.6
-    - name: check packer hcl2 formatting
+
+    - name: Setup latest packer
+      uses: hashicorp-contrib/setup-packer@v1
+      with:
+        packer-version: 1.6.6
+
+    - name: Check packer hcl2 formatting
       working-directory: packer/centos/
       run:
         packer fmt -check .
-    - name: validate packer hcl2 syntax
+
+    - name: Validate packer hcl2 syntax
       working-directory: packer/centos/
       run:
         packer validate -var "ssh_password=${{ secrets.PACKER_SSH_PASSWORD }}" .
