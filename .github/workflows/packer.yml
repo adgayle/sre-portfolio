@@ -4,10 +4,12 @@ name: packer validate
 on:
   push:
     paths:
+    - '.github/workflows/packer.yml'
     - 'packer/centos/*.hcl'
     - 'packer/centos/*.json'
   pull_request:
     paths:
+    - '.github/workflows/packer.yml'
     - 'packer/centos/*.hcl'
     - 'packer/centos/*.json'
 
