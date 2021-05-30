@@ -1,0 +1,22 @@
+---
+- name: Install Docker pre-requisites
+  block:
+    - name: Install Docker pre-requisite packages
+      ansible.builtin.package:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+
+    - name: Import GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add docker repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        update_cache: yes
+        filename: docker-ce
+  when: ansible_facts['distribution']|lower == 'ubuntu'

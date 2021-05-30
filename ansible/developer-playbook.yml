@@ -1,0 +1,27 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Configure user
+      include_role:
+        name: user
+
+    - name: Install common utilities
+      include_role:
+        name: utilities
+      vars:
+        utility_packages:
+          - curl
+          - git
+          - jq
+          - make
+          - tmux
+          - unzip
+          - vim
+          - wget
+
+    - name: Install docker community edition
+      include_role:
+        name: docker
+      vars:
+        ubuntu: yes

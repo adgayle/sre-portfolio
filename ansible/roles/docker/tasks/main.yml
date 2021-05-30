@@ -1,0 +1,6 @@
+---
+- name: Install Docker pre-requisites
+  import_tasks: pre-req.yml
+
+- name: Install Docker and configure user access
+  import_tasks: docker-ce.yml
