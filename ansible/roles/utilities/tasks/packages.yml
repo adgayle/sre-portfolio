@@ -1,0 +1,4 @@
+---
+- name: Install common utility packages
+  ansible.builtin.package:
+    name: "{{ utility_packages }}"
