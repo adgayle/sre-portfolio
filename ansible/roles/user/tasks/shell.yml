@@ -1,0 +1,10 @@
+---
+- name: Install powerline
+  ansible.builtin.package:
+    name:
+      - python3-pip
+      - git
+      - curl
+      - fonts-powerline
+      - powerline
+    state: latest
