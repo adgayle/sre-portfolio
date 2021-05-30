@@ -1,0 +1,7 @@
+- name: Create folder for code
+  ansible.builtin.file:
+    path: /home/vagrant/code
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0750
