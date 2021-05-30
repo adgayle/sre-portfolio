@@ -1,0 +1,17 @@
+---
+- name: Install docker-ce packages
+  ansible.builtin.package:
+    name:
+      - docker-ce
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    append: yes
+    groups: docker
+    name: vagrant
+
+- name: Start docker
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+    state: started
