@@ -1,0 +1,41 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Configure powerline rc
+      ansible.builtin.blockinfile:
+        path: /home/vagrant/.bashrc
+        block: |
+          # Powerline configuration
+          if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
+            powerline-daemon -q
+            POWERLINE_BASH_CONTINUATION=1
+            POWERLINE_BASH_SELECT=1
+            source /usr/share/powerline/bindings/bash/powerline.sh
+          fi
+          # asdf configuration
+          source $HOME/.asdf/asdf.sh
+
+    - name: Configure vim for powerline
+      ansible.builtin.blockinfile:
+        path: /home/vagrant/.vimrc
+        create: yes
+        marker: "\"{mark} ANSIBLE MANAGED BLOCK"
+        block: |
+          python3 from powerline.vim import setup as powerline_setup
+          python3 powerline_setup()
+          python3 del powerline_setup
+
+          set laststatus=2
+
+    - name: Install and configure asdf plugins
+      include_role:
+        name: asdf
+
+    - name: Add my ssh public key
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('file', '/home/vagrant/ansible/files/id_rsa-remote-ssh.pub') }}"
+        manage_dir: no
+        comment: "vscode-remote-ssh"
