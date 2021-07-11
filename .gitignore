@@ -1,3 +1,5 @@
 vagrant/**/.vagrant/
 packer/**/packer_cache/
 packer/**/output-**-vbox/
+terraform/**/.terraform/
+terraform.tfstate*
