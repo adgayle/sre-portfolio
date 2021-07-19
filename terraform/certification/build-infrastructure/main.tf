@@ -8,7 +8,8 @@ resource "aws_security_group" "allow_ssh" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = [var.ipv4_mgmt_network]
+    ipv6_cidr_blocks = [var.ipv6_mgmt_network]
   }
 
   egress {
@@ -30,7 +31,7 @@ resource "aws_instance" "web" {
   ami           = data.aws_ami.amazon_linux.id
   instance_type = "t3.micro"
   subnet_id     = sort(data.aws_subnet_ids.default.ids)[0]
-  key_name      = "terraform_automation"
+  key_name      = "terraform-automation"
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
 
   tags = {
