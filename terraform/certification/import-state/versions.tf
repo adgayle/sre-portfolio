@@ -6,5 +6,13 @@ terraform {
     }
   }
 
+  backend "remote" {
+    organization = "wec-acme-inc"
+
+    workspaces {
+      name = "certification-migrate-state"
+    }
+  }
+
   required_version = "1.0.1"
 }
