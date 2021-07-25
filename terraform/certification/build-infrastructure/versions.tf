@@ -1,4 +1,12 @@
 terraform {
+  backend "remote" {
+    organization = "wec-acme-inc"
+
+    workspaces {
+      name = "certification-remote-state"
+    }
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
