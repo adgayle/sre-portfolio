@@ -3,4 +3,4 @@ packer/**/packer_cache/
 packer/**/output-**-vbox/
 terraform/**/.terraform/
 terraform.tfstate*
-react/**/node_modules/
+__pycache__/
