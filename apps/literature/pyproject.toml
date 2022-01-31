@@ -7,10 +7,12 @@ authors = ["Alquin Gayle <26052969+adgayle@users.noreply.github.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 Flask = "^2.0.2"
-Flask-RESTful = "^0.3.9"
 requests = "^2.27.1"
 black = "^21.12b0"
 Flask-SQLAlchemy = "^2.5.1"
+Faker = "^11.3.0"
+flask-marshmallow = "^0.14.0"
+marshmallow-sqlalchemy = "^0.27.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
