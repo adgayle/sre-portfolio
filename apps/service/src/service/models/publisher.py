@@ -1,6 +1,6 @@
 """Publisher model"""
 from marshmallow import fields, Schema
-import datetime
+from datetime import datetime
 from . import bcrypt, db
 
 
@@ -23,8 +23,8 @@ class Publisher(db.Model):
         self.email = data.get("email")
         self.phone = data.get("phone")
         self.password = self.__generate_hash(data.get("password"))
-        self.created_at = datetime.datetime.utcnow()
-        self.modified_at = datetime.datetime.utcnow()
+        self.created_at = datetime.utcnow()
+        self.modified_at = datetime.utcnow()
 
     def add(self) -> None:
         """Add a Publisher"""
@@ -38,7 +38,7 @@ class Publisher(db.Model):
                 self.password = self.__generate_hash(value)
             else:
                 setattr(self, key, value)
-        self.modified_at = datetime.datetime.utcnow()
+        self.modified_at = datetime.utcnow()
         db.session.commit()
 
     def delete(self) -> None:
