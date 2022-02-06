@@ -1,5 +1,6 @@
 """Reports model"""
 from datetime import datetime
+from marshmallow import fields, Schema
 from . import db
 
 
@@ -14,6 +15,8 @@ class Report(db.Model):
     video_showings = db.Column(db.Integer, nullable=True)
     return_visits = db.Column(db.Integer, nullable=True)
     studies = db.Column(db.Integer, nullable=True)
+    comments = db.Column(db.String(256), nullable=True)
+    publisher_id = db.Column(db.Integer, db.ForeignKey("publisher.id"), nullable=False)
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
 
@@ -24,6 +27,8 @@ class Report(db.Model):
         self.video_showings = data.video_showings
         self.return_visits = data.return_visits
         self.studies = data.studies
+        self.comments = data.comments
+        self.publisher_id = data.get("publisher_id")
         self.created_at = datetime.utcnow()
         self.modified_at = datetime.utcnow()
 
@@ -52,3 +57,18 @@ class Report(db.Model):
     def __repr__(self) -> str:
         """Return the string representation of a report"""
         return f"<id {self.id}>"
+
+
+class ReportSchema(Schema):
+    """Report schema definition"""
+
+    id = fields.Int(dump_only=True)
+    hours = fields.Int(required=True)
+    placements = fields.Int(required=True)
+    video_showings = fields.Int(required=False)
+    return_visits = fields.Int(required=False)
+    studies = fields.Int(required=False)
+    comments = fields.Str(required=False)
+    publisher_id = fields.Int(required=True)
+    created_at = fields.DateTime(dump_only=True)
+    modified_at = fields.DateTime(dump_only=True)

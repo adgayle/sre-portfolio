@@ -2,6 +2,7 @@
 from marshmallow import fields, Schema
 from datetime import datetime
 from . import bcrypt, db
+from .report import ReportSchema
 
 
 class Publisher(db.Model):
@@ -16,6 +17,7 @@ class Publisher(db.Model):
     password = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
+    reports = db.relationship("Report", backref="publishers", lazy=True)
 
     def __init__(self, data: dict) -> None:
         """Publisher constructor"""
@@ -72,3 +74,16 @@ class Publisher(db.Model):
     def check_password(self, password: str) -> bool:
         """Check if the password provided matches the stored"""
         return bcrypt.check_password_hash(self.password, password)
+
+
+class PublisherSchema(Schema):
+    """Publisher schema definition"""
+
+    id = fields.Int(dump_only=True)
+    name = fields.Str(required=True)
+    email = fields.Str(required=True)
+    phone = fields.Str(required=False)
+    password = fields.Str(required=True)
+    created_at = fields.DateTime(dump_only=True)
+    modified_at = fields.DateTime(dump_only=True)
+    reports = fields.Nested(ReportSchema, many=True)
