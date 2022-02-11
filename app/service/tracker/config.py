@@ -6,7 +6,7 @@ class Dev(object):
     """Development environment"""
 
     DEBUG = True
-    TESTING = False
+    TESTING = True
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
 
