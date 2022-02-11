@@ -16,6 +16,7 @@ psycopg2-binary = "^2.9.3"
 PyJWT = "^2.3.0"
 black = "^22.1.0"
 pytest-cov = "^3.0.0"
+Faker = "^12.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
