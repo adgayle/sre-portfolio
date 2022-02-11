@@ -22,12 +22,12 @@ class Report(db.Model):
 
     def __init__(self, data: dict) -> None:
         """Report constructor"""
-        self.hours = data.hours
-        self.placements = data.placements
-        self.video_showings = data.video_showings
-        self.return_visits = data.return_visits
-        self.studies = data.studies
-        self.comments = data.comments
+        self.hours = data.get("hours")
+        self.placements = data.get("placements")
+        self.video_showings = data.get("video_showings")
+        self.return_visits = data.get("return_visits")
+        self.studies = data.get("studies")
+        self.comments = data.get("comments")
         self.publisher_id = data.get("publisher_id")
         self.created_at = datetime.utcnow()
         self.modified_at = datetime.utcnow()
