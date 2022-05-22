@@ -13,7 +13,11 @@ func main() {
 	bookings := []string{}
 
 	fmt.Printf("Welcome to %v booking application!\n", conferenceName)
-	fmt.Printf("We have a total of %v tickets and %v are still available.\n", conferenceTickets, remainingTickets)
+	fmt.Printf(
+		"We have a total of %v tickets and %v are still available.\n",
+		conferenceTickets,
+		remainingTickets,
+	)
 	fmt.Println("Get your tickets here to attend.")
 
 	for remainingTickets > 0 {
@@ -28,19 +32,36 @@ func main() {
 		fmt.Scan(&firstName)
 		fmt.Print("Please enter your last name: ")
 		fmt.Scan(&lastName)
+		isValidName := len(firstName) >= 2 && len(lastName) >= 2
+
 		fmt.Print("Please enter your email address: ")
 		fmt.Scan(&emailAddress)
+		isValidEmailAddress := strings.Contains(emailAddress, "@")
+
 		fmt.Print("Please enter the number of tickets you would like to purchase: ")
 		fmt.Scan(&userTickets)
+		isValidUserTickets := userTickets > 0 && userTickets <= remainingTickets
 
-		if userTickets <= remainingTickets {
+		if isValidUserTickets && isValidName && isValidEmailAddress {
 			remainingTickets = remainingTickets - userTickets
 			fmt.Println()
-			fmt.Printf("Thank you %v %v for booking %v tickets.\n", firstName, lastName, userTickets)
-			fmt.Printf("You will receive a confirmation at your email address %v.\n", emailAddress)
+			fmt.Printf(
+				"Thank you %v %v for booking %v tickets.\n",
+				firstName,
+				lastName,
+				userTickets,
+			)
+			fmt.Printf(
+				"You will receive a confirmation at your email address %v.\n",
+				emailAddress,
+			)
 
 			fmt.Println()
-			fmt.Printf("There are %v tickets still available for %v.\n", remainingTickets, conferenceName)
+			fmt.Printf(
+				"There are %v tickets still available for %v.\n",
+				remainingTickets,
+				conferenceName,
+			)
 
 			bookings = append(bookings, firstName+" "+lastName)
 			for _, booking := range bookings {
@@ -50,7 +71,19 @@ func main() {
 
 			fmt.Printf("The bookings are: %v\n", privateNames)
 		} else {
-			fmt.Printf("We only have %v tickets available, you wanted %v.\n", remainingTickets, userTickets)
+			if !isValidName {
+				fmt.Println("The first or last name you entered must be 2 or more characters.")
+			}
+			if !isValidEmailAddress {
+				fmt.Println("The email address must contain the @ character.")
+			}
+			if !isValidUserTickets {
+				fmt.Printf(
+					"The number of tickets must be more than 0 but less than the number we have available %v.\n",
+					remainingTickets,
+				)
+			}
+			fmt.Println("Please try again.")
 			continue
 		}
 
