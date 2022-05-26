@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strings"
+
+	"booking/helper"
 )
 
 const conferenceName = "Developer Conference"
@@ -18,7 +20,7 @@ func main() {
 	for remainingTickets > 0 {
 		firstName, lastName, emailAddress, userTickets := getUserInput()
 
-		isValidName, isValidEmailAddress, isValidUserTickets := validateUserInput(firstName, lastName, emailAddress, userTickets)
+		isValidName, isValidEmailAddress, isValidUserTickets := helper.ValidateUserInput(firstName, lastName, emailAddress, userTickets, remainingTickets)
 
 		if isValidUserTickets && isValidName && isValidEmailAddress {
 			bookTicket(userTickets, firstName, lastName, emailAddress)
@@ -33,7 +35,7 @@ func main() {
 				fmt.Println("The first or last name you entered must be 2 or more characters.")
 			}
 			if !isValidEmailAddress {
-				fmt.Println("The email address must contain the @ character.")
+				fmt.Println("The email address must contain the @ character and have at least 5 characters.")
 			}
 			if !isValidUserTickets {
 				fmt.Printf("The number of tickets must be more than 0 but less than the number we have available %v.\n", remainingTickets)
@@ -63,14 +65,6 @@ func printFirstNameLastInitial() {
 		privateNames = append(privateNames, names[0]+" "+names[1][0:1])
 	}
 	fmt.Printf("The bookings are: %v\n", privateNames)
-}
-
-func validateUserInput(firstName string, lastName string, emailAddress string, userTickets uint) (bool, bool, bool) {
-	isValidName := len(firstName) >= 2 && len(lastName) >= 2
-	isValidEmailAddress := strings.Contains(emailAddress, "@") && len(emailAddress) > 5
-	isValidUserTickets := userTickets > 0 && userTickets <= remainingTickets
-
-	return isValidName, isValidEmailAddress, isValidUserTickets
 }
 
 func getUserInput() (string, string, string, uint) {
