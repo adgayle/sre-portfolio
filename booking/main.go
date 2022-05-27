@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
 
 	"booking/helper"
 )
@@ -11,7 +11,7 @@ const conferenceName = "Developer Conference"
 const conferenceTickets = 50
 
 var remainingTickets uint = conferenceTickets
-var bookings = []string{}
+var bookings = make([]map[string]string, 0)
 
 func main() {
 
@@ -58,13 +58,12 @@ func greetUser() {
 }
 
 func printFirstNameLastInitial() {
-	privateNames := []string{}
+	firstNameLastInitial := []string{}
 
 	for _, booking := range bookings {
-		var names = strings.Fields(booking)
-		privateNames = append(privateNames, names[0]+" "+names[1][0:1])
+		firstNameLastInitial = append(firstNameLastInitial, booking["firstName"]+" "+booking["lastName"][0:1])
 	}
-	fmt.Printf("The bookings are: %v\n", privateNames)
+	fmt.Printf("The bookings are: %v\n", firstNameLastInitial)
 }
 
 func getUserInput() (string, string, string, uint) {
@@ -89,8 +88,16 @@ func getUserInput() (string, string, string, uint) {
 }
 
 func bookTicket(userTickets uint, firstName string, lastName string, emailAddress string) {
+	var userData = make(map[string]string)
+
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = emailAddress
+	userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
 	remainingTickets = remainingTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName)
+
+	bookings = append(bookings, userData)
 
 	fmt.Println()
 	fmt.Printf("Thank you %v %v for booking %v tickets.\n", firstName, lastName, userTickets)
@@ -98,4 +105,6 @@ func bookTicket(userTickets uint, firstName string, lastName string, emailAddres
 
 	fmt.Println()
 	fmt.Printf("There are %v tickets still available for %v.\n", remainingTickets, conferenceName)
+	fmt.Println()
+	fmt.Printf("Map of bookings %v\n", bookings)
 }
