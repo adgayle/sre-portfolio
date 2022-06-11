@@ -24,6 +24,27 @@ func getBooks(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, books)
 }
 
+func checkoutBook(context *gin.Context) {
+	isbn, ok := context.GetQuery("isbn")
+	if !ok {
+		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing isbn query parameter"})
+		return
+	}
+
+	book, err := bookByISBN(isbn)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
+		return
+	}
+
+	if book.Quantity <= 0 {
+		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Book not available"})
+		return
+	}
+	book.Quantity -= 1
+	context.IndentedJSON(http.StatusOK, book)
+}
+
 func bookByISBN(isbn string) (*book, error) {
 	for index, book := range books {
 		if book.ISBN == isbn {
@@ -58,11 +79,13 @@ func getBookByISBN(context *gin.Context) {
 }
 
 func main() {
-	fmt.Println("Welcome to our Library")
+	fmt.Println("Welcome to our Book Library")
 
 	router := gin.Default()
+	router.SetTrustedProxies(nil)
 	router.GET("/books", getBooks)
 	router.POST("/books", addBook)
 	router.GET("/books/:isbn", getBookByISBN)
+	router.PATCH("/checkout", checkoutBook)
 	router.Run("localhost:8080")
 }
