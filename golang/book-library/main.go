@@ -1,3 +1,4 @@
+// book-library provides basic functions to simulate a library of books
 package main
 
 import (
@@ -14,16 +15,20 @@ type book struct {
 	Quantity int    `json:"quantity"`
 }
 
+// books initial library of books
+// TODO: move to document database
 var books = []book{
 	{ISBN: "123456789", Title: "Tom Sawyer", Author: "Mark Twain", Quantity: 2},
 	{ISBN: "097562351", Title: "Old Man and the Sea", Author: "Ernest Hemingway", Quantity: 3},
 	{ISBN: "183045751", Title: "The Pearl", Author: "John Steinbeck", Quantity: 4},
 }
 
+// getBooks lists all the books available in the library
 func getBooks(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, books)
 }
 
+// checkoutBook takes out a book from the library
 func checkoutBook(context *gin.Context) {
 	isbn, ok := context.GetQuery("isbn")
 	if !ok {
@@ -45,6 +50,7 @@ func checkoutBook(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, book)
 }
 
+// returnBook returns a book to the library
 func returnBook(context *gin.Context) {
 	isbn, ok := context.GetQuery("isbn")
 	if !ok {
@@ -62,6 +68,7 @@ func returnBook(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, gin.H{"message": book})
 }
 
+// bookByISBN finds a book given the ISBN
 func bookByISBN(isbn string) (*book, error) {
 	for index, book := range books {
 		if book.ISBN == isbn {
@@ -72,6 +79,7 @@ func bookByISBN(isbn string) (*book, error) {
 	return nil, fmt.Errorf("book with ISBN %v not found", isbn)
 }
 
+// addBook adds a book to the library
 func addBook(context *gin.Context) {
 	var newBook book
 
@@ -83,6 +91,7 @@ func addBook(context *gin.Context) {
 	context.IndentedJSON(http.StatusCreated, newBook)
 }
 
+// getBookByISBN list a book given the ISBN
 func getBookByISBN(context *gin.Context) {
 	isbn := context.Param("isbn")
 	book, err := bookByISBN(isbn)
@@ -95,6 +104,7 @@ func getBookByISBN(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, book)
 }
 
+// main the controlling function
 func main() {
 	fmt.Println("Welcome to our Book Library")
 
