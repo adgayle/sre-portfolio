@@ -4,3 +4,5 @@ packer/**/output-**-vbox/
 terraform/**/.terraform/
 terraform.tfstate*
 react/**/node_modules/
+.vscode/
+
