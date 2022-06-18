@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type book struct {
+type Book struct {
 	ISBN     string `json:"isbn"`
 	Title    string `json:"title"`
 	Author   string `json:"author"`
@@ -17,59 +17,59 @@ type book struct {
 
 // books initial library of books
 // TODO: move to document database
-var books = []book{
+var books = []Book{
 	{ISBN: "123456789", Title: "Tom Sawyer", Author: "Mark Twain", Quantity: 2},
 	{ISBN: "097562351", Title: "Old Man and the Sea", Author: "Ernest Hemingway", Quantity: 3},
 	{ISBN: "183045751", Title: "The Pearl", Author: "John Steinbeck", Quantity: 4},
 }
 
-// getBooks lists all the books available in the library
-func getBooks(context *gin.Context) {
-	context.IndentedJSON(http.StatusOK, books)
+// GetBooks lists all the books available in the library
+func GetBooks(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, books)
 }
 
-// checkoutBook takes out a book from the library
-func checkoutBook(context *gin.Context) {
-	isbn, ok := context.GetQuery("isbn")
+// CheckoutBook takes out a book from the library
+func CheckoutBook(c *gin.Context) {
+	isbn, ok := c.GetQuery("isbn")
 	if !ok {
-		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing isbn query parameter"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing isbn query parameter"})
 		return
 	}
 
 	book, err := bookByISBN(isbn)
 	if err != nil {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
 		return
 	}
 
 	if book.Quantity <= 0 {
-		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Book not available"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Book not available"})
 		return
 	}
 	book.Quantity -= 1
-	context.IndentedJSON(http.StatusOK, book)
+	c.IndentedJSON(http.StatusOK, book)
 }
 
-// returnBook returns a book to the library
-func returnBook(context *gin.Context) {
-	isbn, ok := context.GetQuery("isbn")
+// ReturnBook returns a book to the library
+func ReturnBook(c *gin.Context) {
+	isbn, ok := c.GetQuery("isbn")
 	if !ok {
-		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing isbn query parameter"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing isbn query parameter"})
 		return
 	}
 
 	book, err := bookByISBN(isbn)
 	if err != nil {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
 		return
 	}
 
 	book.Quantity += 1
-	context.IndentedJSON(http.StatusOK, gin.H{"message": book})
+	c.IndentedJSON(http.StatusOK, gin.H{"message": book})
 }
 
 // bookByISBN finds a book given the ISBN
-func bookByISBN(isbn string) (*book, error) {
+func bookByISBN(isbn string) (*Book, error) {
 	for index, book := range books {
 		if book.ISBN == isbn {
 			return &books[index], nil
@@ -79,41 +79,46 @@ func bookByISBN(isbn string) (*book, error) {
 	return nil, fmt.Errorf("book with ISBN %v not found", isbn)
 }
 
-// addBook adds a book to the library
-func addBook(context *gin.Context) {
-	var newBook book
+// AddBook adds a book to the library
+func AddBook(c *gin.Context) {
+	var newBook Book
 
-	if err := context.BindJSON(&newBook); err != nil {
+	if err := c.BindJSON(&newBook); err != nil {
 		return
 	}
 
 	books = append(books, newBook)
-	context.IndentedJSON(http.StatusCreated, newBook)
+	c.IndentedJSON(http.StatusCreated, newBook)
 }
 
-// getBookByISBN list a book given the ISBN
-func getBookByISBN(context *gin.Context) {
-	isbn := context.Param("isbn")
+// GetBookByISBN list a book given the ISBN
+func GetBookByISBN(c *gin.Context) {
+	isbn := c.Param("isbn")
 	book, err := bookByISBN(isbn)
 
 	if err != nil {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
 		return
 	}
 
-	context.IndentedJSON(http.StatusOK, book)
+	c.IndentedJSON(http.StatusOK, book)
+}
+
+// handleHomePage handles GET requests to /
+func HandleHomePage(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "Welcome to our Book Library"})
 }
 
 // main the controlling function
 func main() {
-	fmt.Println("Welcome to our Book Library")
 
 	router := gin.Default()
 	router.SetTrustedProxies(nil)
-	router.GET("/books", getBooks)
-	router.POST("/books", addBook)
-	router.GET("/books/:isbn", getBookByISBN)
-	router.PATCH("/checkout", checkoutBook)
-	router.PATCH("/return", returnBook)
+	router.GET("/", HandleHomePage)
+	router.GET("/books", GetBooks)
+	router.POST("/books", AddBook)
+	router.GET("/books/:isbn", GetBookByISBN)
+	router.PATCH("/checkout", CheckoutBook)
+	router.PATCH("/return", ReturnBook)
 	router.Run("localhost:8080")
 }
