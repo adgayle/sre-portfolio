@@ -104,7 +104,7 @@ func GetBookByISBN(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, book)
 }
 
-// handleHomePage handles GET requests to /
+// HandleHomePage handles GET requests to /
 func HandleHomePage(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"message": "Welcome to our Book Library"})
 }
