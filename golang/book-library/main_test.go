@@ -45,3 +45,42 @@ func TestHandleHomePage(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 
 }
+
+func TestAddBook(t *testing.T) {
+	r := SetUpRouter()
+	r.POST("/books", AddBook)
+	book := Book{
+		ISBN:     "097562351",
+		Title:    "Old Man and the Sea",
+		Author:   "Ernest Hemingway",
+		Quantity: 3,
+	}
+	jsonValue, _ := json.Marshal(book)
+	req, _ := http.NewRequest("POST", "/books", bytes.NewBuffer(jsonValue))
+
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusCreated, w.Code)
+}
+
+func TestGetBooks(t *testing.T) {
+	r := SetUpRouter()
+	r.GET("/books", GetBooks)
+	req, _ := http.NewRequest("GET", "/books", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	var books []Book
+	json.Unmarshal(w.Body.Bytes(), &books)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+}
+
+func TestCheckoutBook(t *testing.T) {
+	r := SetUpRouter()
+	r.PATCH("/books", CheckoutBook)
+	reqFound, _ := http.NewRequest("PATCH", "/books?isbn=123456789", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, reqFound)
+	assert.Equal(t, http.StatusOK, w.Code)
+}
