@@ -18,10 +18,11 @@ func SetUpRouter() *gin.Engine {
 	return router
 }
 
-func prettyJSON(str string) (string, error) {
+// prettyJSON formats the JSON string using indent
+func prettyJSON(str string, indent string) (string, error) {
 	var pretty bytes.Buffer
 
-	if err := json.Indent(&pretty, []byte(str), "", "    "); err != nil {
+	if err := json.Indent(&pretty, []byte(str), "", indent); err != nil {
 		return "", err
 	}
 	return pretty.String(), nil
@@ -29,7 +30,7 @@ func prettyJSON(str string) (string, error) {
 
 func TestHandleHomePage(t *testing.T) {
 	mockResponse := `{"message": "Welcome to our Book Library"}`
-	res, err := prettyJSON(mockResponse)
+	res, err := prettyJSON(mockResponse, "    ")
 	if err != nil {
 		log.Fatal(err)
 	}
