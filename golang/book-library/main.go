@@ -21,6 +21,7 @@ var books = []Book{
 	{ISBN: "123456789", Title: "Tom Sawyer", Author: "Mark Twain", Quantity: 2},
 	{ISBN: "097562351", Title: "Old Man and the Sea", Author: "Ernest Hemingway", Quantity: 3},
 	{ISBN: "183045751", Title: "The Pearl", Author: "John Steinbeck", Quantity: 4},
+	{ISBN: "111111111", Title: "The Silver Sword", Author: "Ian Serraillier", Quantity: 0},
 }
 
 // GetBooks lists all the books available in the library
