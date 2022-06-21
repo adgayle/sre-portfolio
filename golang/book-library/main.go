@@ -9,10 +9,10 @@ import (
 )
 
 type Book struct {
-	ISBN     string `json:"isbn"`
-	Title    string `json:"title"`
-	Author   string `json:"author"`
-	Quantity int    `json:"quantity"`
+	ISBN     string `json:"isbn" binding:"required"`
+	Title    string `json:"title" binding:"required"`
+	Author   string `json:"author" binding:"required"`
+	Quantity int    `json:"quantity" binding:"required"`
 }
 
 // books initial library of books
@@ -85,6 +85,7 @@ func AddBook(c *gin.Context) {
 	var newBook Book
 
 	if err := c.BindJSON(&newBook); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Bad book JSON"})
 		return
 	}
 
