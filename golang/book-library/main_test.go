@@ -51,19 +51,32 @@ func TestHandleHomePage(t *testing.T) {
 func TestAddBook(t *testing.T) {
 	r := SetUpRouter()
 	r.POST("/books", AddBook)
-	book := Book{
+
+	// Add a valid book
+	goodBook := Book{
 		ISBN:     "097562351",
 		Title:    "Old Man and the Sea",
 		Author:   "Ernest Hemingway",
 		Quantity: 3,
 	}
-	jsonValue, _ := json.Marshal(book)
-	req, _ := http.NewRequest("POST", "/books", bytes.NewBuffer(jsonValue))
-
+	jsonValue, _ := json.Marshal(goodBook)
+	goodReq, _ := http.NewRequest("POST", "/books", bytes.NewBuffer(jsonValue))
 	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
+	r.ServeHTTP(w, goodReq)
 
 	assert.Equal(t, http.StatusCreated, w.Code)
+
+	// Attempt to add an invalid book
+	badBook := Book{
+		ISBN:  "222222222",
+		Title: "As You Like It",
+	}
+	jsonValue, _ = json.Marshal(badBook)
+	badReq, _ := http.NewRequest("POST", "/books", bytes.NewBuffer(jsonValue))
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, badReq)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 func TestGetBooks(t *testing.T) {
@@ -116,27 +129,46 @@ func TestCheckoutBook(t *testing.T) {
 func TestReturnBook(t *testing.T) {
 	r := SetUpRouter()
 	r.PATCH("/books", ReturnBook)
+
+	// Book will be found
 	reqFound, _ := http.NewRequest("PATCH", "/books?isbn=123456789", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, reqFound)
 
 	assert.Equal(t, http.StatusOK, w.Code)
 
+	// Book not found
 	reqNotFound, _ := http.NewRequest("PATCH", "/books?isbn=000000000", nil)
 	w = httptest.NewRecorder()
 	r.ServeHTTP(w, reqNotFound)
 
 	assert.Equal(t, http.StatusNotFound, w.Code)
+
+	// Bad return no isbn
+	reqBadNoISBN, _ := http.NewRequest("PATCH", "/books", nil)
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, reqBadNoISBN)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 func TestGetBookByISBN(t *testing.T) {
 	r := SetUpRouter()
 	r.GET("/books/:isbn", GetBookByISBN)
-	req, _ := http.NewRequest("GET", "/books/123456789", nil)
+
+	// Book will be found
+	goodReq, _ := http.NewRequest("GET", "/books/123456789", nil)
 	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
+	r.ServeHTTP(w, goodReq)
 
 	assert.Equal(t, http.StatusOK, w.Code)
+
+	// Book will not be found
+	badReq, _ := http.NewRequest("GET", "/books/000000000", nil)
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, badReq)
+
+	assert.Equal(t, http.StatusNotFound, w.Code)
 }
 
 func TestBookByISBN(t *testing.T) {
