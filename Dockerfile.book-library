@@ -1,0 +1,40 @@
+# syntax=docker/dockerfile:1
+
+## Build
+FROM golang:1.18-alpine3.16 AS build
+
+WORKDIR /src
+
+COPY golang/book-library/go.mod ./
+COPY golang/book-library/go.sum ./
+RUN go mod download
+
+COPY golang/book-library/*.go ./
+
+RUN go build -o ./book-library
+
+## Deploy
+FROM alpine:3.16.0
+
+ENV USER=runner
+
+WORKDIR /app
+
+RUN addgroup --system "${USER}" \
+  && adduser --gecos "App Runner" \
+  --system \
+  --disabled-password \
+  --ingroup "${USER}" \
+  --no-create-home \
+  --home "$(pwd)" \
+  "${USER}"
+
+RUN apk add --no-cache tini
+
+COPY --from=build /src/book-library ./
+
+EXPOSE 8080
+
+USER ${USER}:${USER}
+
+ENTRYPOINT [ "/sbin/tini", "--", "/app/book-library" ]
