@@ -33,5 +33,3 @@ jobs:
           file: ./Dockerfile.book-library
           push: true
           tags: ${{ secrets.DOCKER_USER }}/${{ env.REPOSITORY }}:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USER }}/${{ env.REPOSITORY }}:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.REPOSITORY }}:buildcache,mode=max
