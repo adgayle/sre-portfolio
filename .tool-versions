@@ -1,1 +1,4 @@
 golang 1.18.2
+k3d 5.4.6
+kubectl 1.24.8
+helm 3.9.4
