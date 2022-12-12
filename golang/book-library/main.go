@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -115,12 +116,21 @@ func HandleHomePage(c *gin.Context) {
 func main() {
 
 	router := gin.Default()
-	router.SetTrustedProxies(nil)
+	err := router.SetTrustedProxies(nil)
+	if err != nil {
+		log.Fatalf("Failed to configure trusted proxies: %v", err)
+	}
+
 	router.GET("/", HandleHomePage)
 	router.GET("/books", GetBooks)
 	router.POST("/books", AddBook)
 	router.GET("/books/:isbn", GetBookByISBN)
 	router.PATCH("/checkout", CheckoutBook)
 	router.PATCH("/return", ReturnBook)
-	router.Run("localhost:8080")
+
+	addr := "localhost:8080"
+	err = router.Run(addr)
+	if err != nil {
+		log.Fatalf("Failed to run router on %v with error %v", addr, err)
+	}
 }

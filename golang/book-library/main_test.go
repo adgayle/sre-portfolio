@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -41,7 +41,7 @@ func TestHandleHomePage(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
-	responseData, _ := ioutil.ReadAll(w.Body)
+	responseData, _ := io.ReadAll(w.Body)
 
 	assert.Equal(t, res, string(responseData))
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -87,7 +87,8 @@ func TestGetBooks(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	var books []Book
-	json.Unmarshal(w.Body.Bytes(), &books)
+	err := json.Unmarshal(w.Body.Bytes(), &books)
+	assert.Equal(t, err, nil)
 
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.NotEmpty(t, books)
