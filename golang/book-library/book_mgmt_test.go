@@ -19,7 +19,7 @@ func SetUpRouter() *gin.Engine {
 	return router
 }
 
-// prettyJSON formats the JSON string using indent
+// prettyJSON formats the JSON string using indent.
 func prettyJSON(str string, indent string) (string, error) {
 	var pretty bytes.Buffer
 
@@ -52,7 +52,7 @@ func TestAddBook(t *testing.T) {
 	r := SetUpRouter()
 	r.POST("/books", AddBook)
 
-	// Add a valid book
+	// Add a valid book.
 	goodBook := Book{
 		ISBN:     "074005352",
 		Title:    "As You Like It",
@@ -66,7 +66,7 @@ func TestAddBook(t *testing.T) {
 
 	assert.Equal(t, http.StatusCreated, w.Code)
 
-	// Attempt to add an invalid book
+	// Attempt to add an invalid book.
 	badBook := Book{
 		ISBN:  "222222222",
 		Title: "The Great Gatsby",
