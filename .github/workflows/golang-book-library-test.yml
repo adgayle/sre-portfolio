@@ -3,10 +3,11 @@ name: CI for Golang Book Library
 on:
   push:
     paths:
-      - "golang/book-library"
+      - "golang/book-library/*.go"
   pull_request:
     paths:
-      - "golang/book-library"
+      - "golang/book-library/*.go"
+  workflow_dispatch:
 
 jobs:
   test:
