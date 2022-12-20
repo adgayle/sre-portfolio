@@ -1,21 +1,21 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/"
+    directory: "/packer/centos/scripts"
     schedule:
       interval: "daily"
 
   - package-ecosystem: "terraform"
-    directory: "/"
+    directory: "/terraform"
     schedule:
       interval: "daily"
 
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directory: "/.github"
     schedule:
       interval: "daily"
 
   - package-ecosystem: "gomod"
-    directory: "/"
+    directory: "/golang"
     schedule:
-      interval: "daily"
+      interval: "weekly"
