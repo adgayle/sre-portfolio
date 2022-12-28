@@ -17,24 +17,28 @@ RUN go build -o ./book-library
 FROM alpine:3.16.0
 
 ENV USER=runner
+ENV GROUP=runner
+ENV UID=1000
+ENV GID=1000
 
 WORKDIR /app
 
-RUN addgroup --system "${USER}" \
+RUN addgroup --system --gid "${GID}" "${GROUP}" \
   && adduser --gecos "App Runner" \
   --system \
   --disabled-password \
-  --ingroup "${USER}" \
+  --ingroup "${GROUP}" \
   --no-create-home \
   --home "$(pwd)" \
+  --uid "${UID}" \
   "${USER}"
 
-RUN apk add --no-cache tini
+RUN apk add --no-cache tini=0.19.0-r0
 
 COPY --from=build /src/book-library ./
 
 EXPOSE 8080
 
-USER ${USER}:${USER}
+USER ${USER}:${GROUP}
 
 ENTRYPOINT [ "/sbin/tini", "--", "/app/book-library" ]

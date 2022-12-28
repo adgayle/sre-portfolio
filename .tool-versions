@@ -2,3 +2,5 @@ golang 1.19.4
 k3d 5.4.6
 kubectl 1.24.8
 helm 3.9.4
+tilt 0.30.13
+polaris 7.2.0
