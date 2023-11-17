@@ -14,18 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cluster: ["cluster-dev-usw2-b", "cluster-dev-use1-b", "cluster-dev-usw2-c", "cluster-dev-use1-d"]
+        cluster: [
+          { name: "cluster-dev-usw2-b", region: "us-west-2" },
+          { name: "cluster-dev-use1-b", region: "us-east-1" }, 
+          { name: "cluster-dev-usw2-c", region: "us-west-2" },
+          { name: "cluster-dev-use1-d", region: "us-east-1" }
+        ]
     steps:
-      - name: Get region us-west-2
-        if: contains(${{ matrix.cluster }}, "usw2")
+      - name: Print configuration
         run: |
-          echo "CALC_AWS_REGION=us-west-2" >> $GITHUB_ENV
-
-      - name: Get region us-east-1
-        if: contains(${{ matrix.cluster }}, "use1")
-        run: |
-          echo "CALC_AWS_REGION=us-east-1" >> $GITHUB_ENV
-
-      - name: Print region
-        run: |
-          echo "cluster: ${{ matrix.cluster }}, region: $CALC_AWS_REGION"
+          echo "cluster: ${{ matrix.cluster.name }}, region: ${{ matrix.cluster.region }}"
