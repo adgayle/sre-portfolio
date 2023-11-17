@@ -5,8 +5,9 @@ on:
   push:
     branches: 
       - main
+      - ci/matrix-eval
     paths:
-      - ".github/workflows/matrix.yaml"
+      - ".github/workflows/matrix-conditional.yaml"
 
 jobs:
   evaluate:
