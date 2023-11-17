@@ -1,0 +1,28 @@
+name: Conditional Matrix
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+      - ci/matrix-eval
+    paths:
+      - ".github/workflows/matrix-conditional.yaml"
+
+jobs:
+  evaluate:
+    name: Evaluate conditional matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cluster: ["cluster-dev-usw2-b", "cluster-dev-use1-b", "cluster-dev-usw2-c", "cluster-dev-use1-d"]
+    steps:
+      - name: Get region
+        id: get-region
+        if: contains(${{ matrix.cluster }}, "usw2")
+        run: |
+          echo "AWS_REGION=us-west-2" >> $GITHUB_OUTPUT
+        
+      - name: Print region
+        run: |
+          echo "cluster: ${{ matrix.cluster }}, region: ${{ steps.get-region.outputs.AWS_REGION }}"
