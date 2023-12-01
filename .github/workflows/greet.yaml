@@ -1,0 +1,31 @@
+name: Greeting deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+env:
+  RUN_GREETING: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'main') }}
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print env
+        run: |
+          echo "${{ env.RUN_GREETING }}"
+
+      - name: Dry-run
+        run: |
+          echo "dry-run"
+
+      - name: Deploy
+        if: ${{ env.RUN_GREETING }}
+        run: |
+          echo "deploy"
