@@ -2,8 +2,13 @@ name: Push Book Library Image
 
 on:
   push:
-    branches: ["main"]
+    branches: 
+      - main
+    paths:
+      - "golang/book-library"
   pull_request:
+    branches:
+      - main
     paths:
       - "golang/book-library"
 
@@ -12,7 +17,7 @@ env:
 
 jobs:
   push:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
